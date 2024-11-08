@@ -7,8 +7,9 @@ module RealmTheme
     Realm.class_eval do
       _validators.delete(:realm_type)
       _validate_callbacks.each do |callback|
-        if callback.raw_filter.respond_to? :attributes
-          callback.raw_filter.attributes.delete :realm_type
+        filter_method = callback.respond_to?(:raw_filter) ? :raw_filter : :filter
+        if callback.send(filter_method).respond_to? :attributes
+          callback.send(filter_method).attributes.delete :realm_type
         end
       end
       validates :realm_type, :presence => true, :inclusion => { :in => ["Red Hat Identity Management", "Active Directory"] }

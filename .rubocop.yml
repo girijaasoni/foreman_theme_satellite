@@ -21,3 +21,6 @@ Style/FrozenStringLiteralComment:
 # Support both ruby19 and hash_rockets
 Style/HashSyntax:
   Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false

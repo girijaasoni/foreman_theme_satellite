@@ -228,12 +228,6 @@ Lint/Void:
 Metrics/AbcSize:
   Max: 21
 
-# Offense count: 4
-# Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
-# IgnoredMethods: refine
-Metrics/BlockLength:
-  Max: 31
-
 # Offense count: 1
 # Configuration parameters: IgnoredMethods.
 Metrics/CyclomaticComplexity:

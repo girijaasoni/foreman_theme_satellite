@@ -1,7 +1,6 @@
 require 'test_plugin_helper'
 
 class SettingRegistryBrandingTest < ActiveSupport::TestCase
-  # rubocop:disable Metrics/BlockLength
   describe 'stubbed creation' do
     test 'it replaces value to a branded one using DSL' do
       Setting.where(name: 'dsl_setting').delete_all
@@ -44,7 +43,6 @@ class SettingRegistryBrandingTest < ActiveSupport::TestCase
       assert_nil Setting['test_setting']
     end
   end
-  # rubocop:enable Metrics/BlockLength
 end
 
 class SettingBrandingTest < ActiveSupport::TestCase

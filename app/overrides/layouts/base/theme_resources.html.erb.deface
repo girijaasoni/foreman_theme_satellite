@@ -3,5 +3,5 @@
 <%= javascript_include_tag('foreman_theme_satellite/theme_ng_page_title') %>
 <%= webpacked_plugins_js_for :'foreman_theme_satellite' %>
 <%= javascript_tag do %>
-  <%= render("foreman_theme_satellite/theme_client_side_branding.js") %>
+  <%= render(partial: "foreman_theme_satellite/theme_client_side_branding", formats: :js) %>
 <% end %>

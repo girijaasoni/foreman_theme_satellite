@@ -9,40 +9,42 @@ module ForemanThemeSatellite
     config.eager_load_paths += Dir["#{config.root}/lib"]
 
     initializer 'foreman_theme_satellite.register_plugin', :before=> :finisher_hook do |app|
-      Foreman::Plugin.register :foreman_theme_satellite do
-        requires_foreman '>= 3.13.0'
-        register_gettext
+      app.reloader.to_prepare do
+        Foreman::Plugin.register :foreman_theme_satellite do
+          requires_foreman '>= 3.13.0'
+          register_gettext
 
-        settings do
-          category(:provisioning) do
-            setting('show_unsupported_templates',
-              type: :boolean,
-              default: true,
-              description: N_('Show unsupported provisioning templates. '\
-                              'When enabled, all the avaiable templates will be shown. '\
-                              'When disabled, Red Hat supported templates will be shown only'),
-              full_name: N_('Show unsupported provisioning templates')
-            )
+          settings do
+            category(:provisioning) do
+              setting('show_unsupported_templates',
+                type: :boolean,
+                default: true,
+                description: N_('Show unsupported provisioning templates. '\
+                                'When enabled, all the avaiable templates will be shown. '\
+                                'When disabled, Red Hat supported templates will be shown only'),
+                full_name: N_('Show unsupported provisioning templates')
+              )
+            end
           end
+
+          tests_to_skip ({
+                          "ComputeResourceTest" => ["friendly provider name"],
+                          "RealmIntegrationTest" => ["create new page"],
+                          "SmartProxyIntegrationTest" => ["create new page", "index page"],
+                          "TopBarIntegrationTest" => ["top bar links"],
+                          "AboutIntegrationTest" => ["about page"],
+                          "ComputeProfileIntegrationTest" => ["index page", "create new page", "edit page", "show page", "edit compute attribute page", "new compute attribute page"] ,
+
+                          #the following tests are failing due to change in realms types
+                          "Api::V2::RealmsControllerTest" => ["should create valid realm", "should update valid realm"],
+                          "OrganizationTest" => ["should clone organization with all associations"],
+                          "RealmTest" => ["realm can be assigned to locations"],
+                          "LocationTest" => ["should clone location with all associations"]
+                        })
+
+          extend_rabl_template 'api/v2/home/status', 'api/v2/home/status_extensions'
+          extend_template_helpers ForemanThemeSatellite::RendererMethods
         end
-
-        tests_to_skip ({
-                        "ComputeResourceTest" => ["friendly provider name"],
-                        "RealmIntegrationTest" => ["create new page"],
-                        "SmartProxyIntegrationTest" => ["create new page", "index page"],
-                        "TopBarIntegrationTest" => ["top bar links"],
-                        "AboutIntegrationTest" => ["about page"],
-                        "ComputeProfileIntegrationTest" => ["index page", "create new page", "edit page", "show page", "edit compute attribute page", "new compute attribute page"] ,
-
-                        #the following tests are failing due to change in realms types
-                        "Api::V2::RealmsControllerTest" => ["should create valid realm", "should update valid realm"],
-                        "OrganizationTest" => ["should clone organization with all associations"],
-                        "RealmTest" => ["realm can be assigned to locations"],
-                        "LocationTest" => ["should clone location with all associations"]
-                      })
-
-        extend_rabl_template 'api/v2/home/status', 'api/v2/home/status_extensions'
-        extend_template_helpers ForemanThemeSatellite::RendererMethods
       end
     end
 
