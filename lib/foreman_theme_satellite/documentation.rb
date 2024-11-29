@@ -70,7 +70,7 @@ module ForemanThemeSatellite
 
     PLUGINS_DOCUMENTATION = {
       'foreman_azure' => "#{ForemanThemeSatellite.documentation_root}/provisioning_hosts/provisioning_cloud_instances_on_microsoft_azure_resource_manager_azure-provisioning",
-      'foreman_discovery' => "#{ForemanThemeSatellite.documentation_root}/provisioning_hosts/discovering-hosts-on-a-network_provisioning",
+      'foreman_discovery' =>  (ForemanThemeSatellite.documentation_version.to_f <= 6.15) ? "#{ForemanThemeSatellite.documentation_root}/provisioning_hosts/configuring_the_discovery_service_provisioning" : "#{ForemanThemeSatellite.documentation_root}/provisioning_hosts/discovering-hosts-on-a-network_provisioning"
     }.freeze
 
     DOCS_GUIDES_LINKS = {
@@ -85,6 +85,13 @@ module ForemanThemeSatellite
         'Overriding_Ansible_Variables_in_foreman_ansible' => "#{ForemanThemeSatellite.documentation_root}/managing_configurations_by_using_ansible_integration/getting_started_with_ansible_in_satellite_ansible#Overriding_Ansible_Variables_in_satellite_ansible",
       }
     }.freeze
+
+    def getDiscoveryUrl
+      if ForemanThemeSatellite.documentation_version.to_f <= 6.15
+        "#{ForemanThemeSatellite.documentation_root}/provisioning_hosts/discovering-hosts-on-a-network_provisioning" 
+      else  "#{ForemanThemeSatellite.documentation_root}/provisioning_hosts/discovering-hosts-on-a-network_provisioning"
+      end
+    end
 
     def self.flat_docs_guides_links
       nested_to_flat_k_v(nil, DOCS_GUIDES_LINKS).to_h
